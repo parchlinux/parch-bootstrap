@@ -36,5 +36,4 @@ jobs:
           cd /parch-rootfs-output
           export GZIP=-9
           tar --use-compress-program='xz -3e' -cvf parch-rootfs.tar.xz /parch-rootfs > /tmp/log.txt
-          rm parch-rootfs.tar.xz
           gh release upload ${{ github.event.release.tag_name }} /parch-rootfs-output/* -R ${{ github.repository }}
