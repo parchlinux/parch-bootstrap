@@ -1,4 +1,4 @@
-# This workflow will build an Arch Linux rootfs file with the commit on it
+# This workflow will build an Arch Linux bootstrap file with the commit on it
 name: build parchlinux-bootstrap-x86_64 per release
 on:
   release:
@@ -30,7 +30,7 @@ jobs:
         run: mkdir /parchlinux-bootstrap-x86_64
       - name: install packages via pacstrap to rootfs
         run: pacstrap -K /parchlinux-bootstrap-x86_64 $(cat pkglist.txt | tr '\n' ' ')
-      - name: commpress and upload pacstrap to the release
+      - name: commpress and upload bootstrap to the release
         run: |
           mkdir /parchlinux-bootstrap-x86_64-output
           cd /parchlinux-bootstrap-x86_64-output
