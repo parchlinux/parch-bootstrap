@@ -1,12 +1,5 @@
-alsa-utils
 amd-ucode
 arch-install-scripts
-bluez
-bluez-utils
-pipewire
-pipewire-pulse
-wireplumber
-gst-plugin-pipewire
 archinstall
 b43-fwcutter
 base
@@ -34,7 +27,6 @@ ethtool
 exfatprogs
 f2fs-tools
 fatresize
-firefox
 fsarchiver
 git
 gnu-netcat
@@ -144,7 +136,6 @@ networkmanager
 
 btop
 neofetch-git
-ark
 unzip
 unrar
 

@@ -1,5 +1,5 @@
 # This workflow will build an Arch Linux rootfs file with the commit on it
-name: build parch-rootfs per release
+name: build parchlinux-bootstrap-x86_64 per release
 on:
   release:
     types:
@@ -27,13 +27,12 @@ jobs:
       - name: Change Arch docker mirror
         run: reflector -c "US" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
       - name: making new dir for rootfs
-        run: mkdir /parch-rootfs
+        run: mkdir /parchlinux-bootstrap-x86_64
       - name: install packages via pacstrap to rootfs
-        run: pacstrap -K /parch-rootfs $(cat pkglist.txt | tr '\n' ' ')
-      - name: commpress and upload rootfs to the release
+        run: pacstrap -K /parchlinux-bootstrap-x86_64 $(cat pkglist.txt | tr '\n' ' ')
+      - name: commpress and upload pacstrap to the release
         run: |
-          mkdir /parch-rootfs-output
-          cd /parch-rootfs-output
-          export GZIP=-9
-          tar --use-compress-program='xz -3e' -cvf parch-rootfs.tar.xz /parch-rootfs > /tmp/log.txt
-          gh release upload ${{ github.event.release.tag_name }} /parch-rootfs-output/* -R ${{ github.repository }}
+          mkdir /parchlinux-bootstrap-x86_64-output
+          cd /parchlinux-bootstrap-x86_64-output
+          tar --use-compress-program='xz -9e' -cvf parchlinux-bootstrap-x86_64.tar.xz /parchlinux-bootstrap-x86_64 > /tmp/log.txt
+          gh release upload ${{ github.event.release.tag_name }} /parchlinux-bootstrap-x86_64-output/* -R ${{ github.repository }}
