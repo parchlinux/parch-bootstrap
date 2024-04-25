@@ -27,7 +27,9 @@ jobs:
       - name: Change Arch docker mirror
         run: reflector -c "US" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
       - name: making new dir for rootfs
-        run: mkdir /parchlinux-bootstrap-x86_64/root.x86_64
+        run: |
+          mkdir /parchlinux-bootstrap-x86_64
+          mkdir /parchlinux-bootstrap-x86_64/root.x86_64
       - name: install packages via pacstrap to rootfs
         run: pacstrap -K /parchlinux-bootstrap-x86_64/root.x86_64 $(cat pkglist.txt | tr '\n' ' ')
       - name: commpress and upload bootstrap to the release
