@@ -35,4 +35,5 @@ jobs:
           mkdir /parchlinux-bootstrap-x86_64-output
           cd /parchlinux-bootstrap-x86_64-output
           tar --use-compress-program='xz -9e' -cvf parchlinux-bootstrap-x86_64.tar.xz /parchlinux-bootstrap-x86_64 > /tmp/log.txt
+          sha256sum ./* > sha256sums.txt
           gh release upload ${{ github.event.release.tag_name }} /parchlinux-bootstrap-x86_64-output/* -R ${{ github.repository }}
