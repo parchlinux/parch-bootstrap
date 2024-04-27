@@ -1,4 +1,4 @@
-+# This workflow will build an Arch Linux bootstrap file with the commit on it
+# This workflow will build an Arch Linux bootstrap file with the commit on it
 name: build parchlinux-bootstrap-x86_64 per release
 on:
   release:
