@@ -35,7 +35,7 @@ jobs:
       - name: commpress and upload bootstrap to the release
         run: |
           mkdir /parchlinux-bootstrap-x86_64-output
-          cd /parchlinux-bootstrap-x86_64-output
-          tar --use-compress-program='xz -9e' -cvf parchlinux-bootstrap-x86_64.tar.xz /parchlinux-bootstrap-x86_64/root.x86_64 > /tmp/log.txt
+          cd /parchlinux-bootstrap-x86_64
+          tar --use-compress-program='xz -9e' -cvf /parchlinux-bootstrap-x86_64-output/parchlinux-bootstrap-x86_64.tar.xz ./* > /tmp/log.txt
           sha256sum ./* > sha256sums.txt
           gh release upload ${{ github.event.release.tag_name }} /parchlinux-bootstrap-x86_64-output/* -R ${{ github.repository }}
