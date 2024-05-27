@@ -37,7 +37,7 @@ jobs:
           mkdir /parchlinux-bootstrap-x86_64-output
           cd /parchlinux-bootstrap-x86_64
           tar \
-            --use-compress-program "zstd --threads=4 -19 --comperess"\
+            --use-compress-program "zstd --threads=4 -22 --comperess"\
             --create \
             --file /parchlinux-bootstrap-x86_64-output/parchlinux-bootstrap-x86_64.tar.zst ./* 
           cd /parchlinux-bootstrap-x86_64-output
