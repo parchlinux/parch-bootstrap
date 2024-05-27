@@ -33,14 +33,6 @@ jobs:
         run: pacstrap -K /parchlinux-bootstrap-x86_64/root.x86_64 $(cat pkglist.txt | tr '\n' ' ')
       - name: get date
         run: echo "DATE=$(date +%Y.%m.%d)" >> $GITHUB_ENV
-      - name: Create release
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          gh release create "$DATE" \
-             --repo="$GITHUB_REPOSITORY" \
-             --title="${GITHUB_REPOSITORY#*/}" \
-             --generate-notes
       - name: commpress and upload bootstrap to the release
         run: |
           mkdir /parchlinux-bootstrap-x86_64-output
@@ -48,4 +40,8 @@ jobs:
           tar --use-compress-program='xz -9e' -cvf /parchlinux-bootstrap-x86_64-output/parchlinux-bootstrap-x86_64.tar.xz ./* > /tmp/log.txt
           cd /parchlinux-bootstrap-x86_64-output
           sha256sum ./* > sha256sums.txt
+          gh release create "$DATE" \
+            --repo="$GITHUB_REPOSITORY" \
+            --title="${GITHUB_REPOSITORY#*/}" \
+            --generate-notes
           gh release upload ${{ github.event.release.tag_name }} /parchlinux-bootstrap-x86_64-output/* -R ${{ github.repository }}
