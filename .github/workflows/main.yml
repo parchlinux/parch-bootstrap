@@ -37,9 +37,9 @@ jobs:
           mkdir /parchlinux-bootstrap-x86_64-output
           cd /parchlinux-bootstrap-x86_64
           tar \
-            --use-compress-program "zstd --threads=4 -19"\
+            --use-compress-program "zstd --threads=4 -19 --comperess"\
             --create \
-            --file /parchlinux-bootstrap-x86_64-output/parchlinux-bootstrap-x86_64.tar.zst ./* > /tmp/log.txt
+            --file /parchlinux-bootstrap-x86_64-output/parchlinux-bootstrap-x86_64.tar.zst ./* 
           cd /parchlinux-bootstrap-x86_64-output
           sha256sum ./* > sha256sums.txt
           gh release upload ${{ github.event.release.tag_name }} /parchlinux-bootstrap-x86_64-output/* -R ${{ github.repository }}
