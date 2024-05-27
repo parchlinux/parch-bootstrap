@@ -32,7 +32,7 @@ jobs:
       - name: install packages via pacstrap to rootfs
         run: pacstrap -K /parchlinux-bootstrap-x86_64/root.x86_64 $(cat pkglist.txt | tr '\n' ' ')
       - name: get date
-        run: echo "DATE=$(date +%Y.%m.%d.%H.%M)" >> $GITHUB_ENV
+        run: echo "DATE=$(date +%Y.%m.%d)" >> $GITHUB_ENV
       - name: Create release
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
