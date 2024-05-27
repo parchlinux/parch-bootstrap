@@ -1,0 +1,51 @@
+# This workflow will build an Arch Linux bootstrap file with the commit on it
+name: build parchlinux-bootstrap-x86_64 per 5 day
+on:
+ schedule:
+    - cron: "0 0 */5 * *" 
+
+env:
+  api_key: ${{ secrets.GITHUB_TOKEN }}
+  name: ${{ github.event.repository.name }}
+  release_name: ${{ github.ref_name }}
+  GH_TOKEN: ${{ github.token }}
+jobs:
+  build:
+    permissions:
+      contents: write
+    runs-on: ubuntu-latest
+    container:
+      image: archlinux:latest
+      options: --privileged
+    steps:
+      - uses: actions/checkout@v3
+      - name: Install Packages via Pacman
+        run: pacman -Sy; pacman --noconfirm -S git archiso python python-pygithub github-cli reflector p7zip xz rsync
+      - name: change pacman config
+        run: cp -f pacman.conf /etc/
+      - name: Change Arch docker mirror
+        run: reflector -c "US" -f 12 -l 10 -n 12 --save /etc/pacman.d/mirrorlist
+      - name: making new dir for rootfs
+        run: |
+          mkdir /parchlinux-bootstrap-x86_64
+          mkdir /parchlinux-bootstrap-x86_64/root.x86_64
+      - name: install packages via pacstrap to rootfs
+        run: pacstrap -K /parchlinux-bootstrap-x86_64/root.x86_64 $(cat pkglist.txt | tr '\n' ' ')
+      - name: get date
+        run: echo "DATE=$(date +%Y.%m.%d.%H.%M)" >> $GITHUB_ENV
+      - name: Create release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create "$DATE" \
+             --repo="$GITHUB_REPOSITORY" \
+             --title="${GITHUB_REPOSITORY#*/}" \
+             --generate-notes
+      - name: commpress and upload bootstrap to the release
+        run: |
+          mkdir /parchlinux-bootstrap-x86_64-output
+          cd /parchlinux-bootstrap-x86_64
+          tar --use-compress-program='xz -9e' -cvf /parchlinux-bootstrap-x86_64-output/parchlinux-bootstrap-x86_64.tar.xz ./* > /tmp/log.txt
+          cd /parchlinux-bootstrap-x86_64-output
+          sha256sum ./* > sha256sums.txt
+          gh release upload ${{ github.event.release.tag_name }} /parchlinux-bootstrap-x86_64-output/* -R ${{ github.repository }}
