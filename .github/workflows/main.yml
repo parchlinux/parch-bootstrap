@@ -21,7 +21,7 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Install Packages via Pacman
-        run: pacman -Sy; pacman --noconfirm -S git archiso python python-pygithub github-cli reflector p7zip xz rsync
+        run: pacman -Sy; pacman --noconfirm -S git archiso python python-pygithub github-cli reflector p7zip xz rsync zstd
       - name: change pacman config
         run: cp -f pacman.conf /etc/
       - name: Change Arch docker mirror
@@ -36,7 +36,7 @@ jobs:
         run: |
           mkdir /parchlinux-bootstrap-x86_64-output
           cd /parchlinux-bootstrap-x86_64
-          tar --use-compress-program='xz -9e -T 4' -cvf /parchlinux-bootstrap-x86_64-output/parchlinux-bootstrap-x86_64.tar.xz ./* > /tmp/log.txt
+          tar -zstd -xvf /parchlinux-bootstrap-x86_64-output/parchlinux-bootstrap-x86_64.tar.xz ./* > /tmp/log.txt
           cd /parchlinux-bootstrap-x86_64-output
           sha256sum ./* > sha256sums.txt
           gh release upload ${{ github.event.release.tag_name }} /parchlinux-bootstrap-x86_64-output/* -R ${{ github.repository }}
