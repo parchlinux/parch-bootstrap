@@ -1,6 +1,7 @@
 # This workflow will build an Arch Linux bootstrap file with the commit on it
 name: build per 5 day
 on:
+ workflow_dispatch: 
  schedule:
     - cron: "0 0 */5 * *" 
 
