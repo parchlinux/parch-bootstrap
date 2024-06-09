@@ -2,7 +2,7 @@
 name: build per 5 day
 on:
  workflow_dispatch: 
- schedule:
+# schedule:
     - cron: "0 0 */5 * *" 
 
 env:
